@@ -6,7 +6,7 @@ var sinon           = require('sinon'),
     JsonPersistence = rewire('./index.js');
 
 describe('jsonPersistence', function() {
-    it('should not init the file if does exist', function() {
+    it('should not init the file if it already exists', function() {
         // given
         var existsStub = sinon.stub();
         existsStub.withArgs('existingFileName').callsArgWith(1, true);
@@ -29,13 +29,13 @@ describe('jsonPersistence', function() {
         assert.that(callbackError.message, is.equalTo('File already exists'));
     });
 
-    it('should init the file if does not exist', function() {
+    it('should init the file if it does not exist', function() {
         // given
         var existsStub = sinon.stub();
-        existsStub.withArgs('nonExistingFileName').callsArgWith(1, false);
+        existsStub.withArgs('nonExistentFileName').callsArgWith(1, false);
 
         var writeFileStub = sinon.stub();
-        writeFileStub.withArgs('nonExistingFileName', "[]").callsArg(2);
+        writeFileStub.withArgs('nonExistentFileName', "[]").callsArg(2);
 
         var fsMock = {
             exists: existsStub,
@@ -44,7 +44,7 @@ describe('jsonPersistence', function() {
 
         JsonPersistence.__set__('fs', fsMock);
 
-        var persistence = new JsonPersistence('nonExistingFileName');
+        var persistence = new JsonPersistence('nonExistentFileName');
         var callbackSpy = sinon.spy();
 
         // when
