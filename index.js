@@ -2,7 +2,11 @@
 
 var fs = require('fs');
 
-var jsonPersistence = function(fileName) {
+var jsonPersistence = function(fileName, injectedFileSystem) {
+    if (injectedFileSystem) {
+        fs = injectedFileSystem;
+    }
+
     var module = {};
 
     module.init         = init;
