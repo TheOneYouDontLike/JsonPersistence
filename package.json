@@ -22,7 +22,6 @@
   "homepage": "https://github.com/TheOneYouDontLike/JsonPersistence",
   "devDependencies": {
     "node-assertthat": "^0.2.3",
-    "rewire": "^2.3.3",
     "sinon": "^1.14.1"
   }
 }

@@ -1,11 +1,7 @@
 'use strict';
 
-var fs = require('fs');
-
 var jsonPersistence = function(fileName, injectedFileSystem) {
-    if (injectedFileSystem) {
-        fs = injectedFileSystem;
-    }
+    var fs = injectedFileSystem || require('fs');
 
     var module = {};
 
