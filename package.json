@@ -1,6 +1,6 @@
 {
   "name": "JsonPersistence",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Simple abstraction over fs for saving things",
   "main": "index.js",
   "scripts": {
