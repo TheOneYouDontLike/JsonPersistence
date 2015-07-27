@@ -190,6 +190,38 @@ describe('jsonPersistence working on injected file system', function() {
         assert.that(callbackSpy.calledOnce, is.true());
     });
 
+    it('should not update when there was no items to update', function() {
+        // given
+        var data = [{ name: 'yolo', id: 1 }, { name: 'swag', id: 2 }, { name: 'xD', id: 3 }];
+
+        var readFileStub = sinon.stub();
+        readFileStub.withArgs('existingFileName').callsArgWith(1, null, JSON.stringify(data));
+
+        var writeFileStub = sinon.stub();
+
+        var fsMock = {
+            readFile: readFileStub,
+            writeFile: writeFileStub
+        };
+
+        var persistence = getJsonPersistence('existingFileName', fsMock);
+        var noItemsCallbackSpy = sinon.spy();
+
+        var filteringFunction = function(element) {
+            return element.id === 4;
+        };
+
+        var updatingFunction = function(element) {
+            element.name = 'yolo2';
+        };
+
+        // when
+        persistence.update(filteringFunction, updatingFunction, null, noItemsCallbackSpy);
+
+        // then
+        assert.that(noItemsCallbackSpy.calledOnce, is.true());
+    });
+
     it('should remove data by filtering function', function() {
         // given
         var data = [{ name: 'yolo', id: 1 }, { name: 'swag', id: 2 }, { name: 'xD', id: 3 }];
