@@ -95,18 +95,25 @@ var jsonPersistence = function(fileName, injectedFileSystem) {
         });
     }
 
-    function update(filteringFunction, updatingFunction, callback) {
+    function update(filteringFunction, updatingFunction, callback, noItemsCallback) {
         fs.readFile(fileName, function(error, dataChunk) {
             if (error) {
                 callback(error);
             } else {
                 var parsedData = JSON.parse(dataChunk.toString());
+                var elementsUpdated = 0;
 
                 parsedData.forEach(function(element) {
                     if (filteringFunction(element)) {
                         updatingFunction(element);
+                        elementsUpdated++;
                     }
                 });
+
+                if (elementsUpdated === 0) {
+                    noItemsCallback(new Error('No items found'));
+                    return;
+                }
 
                 fs.writeFile(fileName, JSON.stringify(parsedData), function(error) {
                     callback(error);
