@@ -197,11 +197,8 @@ describe('jsonPersistence working on injected file system', function() {
         var readFileStub = sinon.stub();
         readFileStub.withArgs('existingFileName').callsArgWith(1, null, JSON.stringify(data));
 
-        var writeFileStub = sinon.stub();
-
         var fsMock = {
-            readFile: readFileStub,
-            writeFile: writeFileStub
+            readFile: readFileStub
         };
 
         var persistence = getJsonPersistence('existingFileName', fsMock);
@@ -219,7 +216,7 @@ describe('jsonPersistence working on injected file system', function() {
         persistence.update(filteringFunction, updatingFunction, null, noItemsCallbackSpy);
 
         // then
-        assert.that(noItemsCallbackSpy.calledOnce, is.true());
+        assert.that(noItemsCallbackSpy.calledWith(new Error('No items found')), is.true());
     });
 
     it('should remove data by filtering function', function() {
